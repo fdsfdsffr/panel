@@ -23,15 +23,10 @@ RUN apt update -y && \
 # Add sudo privileges to the RStudio user
 RUN echo "rstudio ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
-# Configure root to use /home/rstudio as its home directory
-RUN usermod --home /home/rstudio root && \
-    echo "cd /home/rstudio" >> /root/.bashrc
+# Add command to switch to /home/rstudio when root logs in
+RUN echo "cd /home/rstudio" >> /root/.bashrc
 
-# Ensure proper permissions for /home/rstudio
-RUN chown -R rstudio:rstudio /home/rstudio && \
-    chmod -R 755 /home/rstudio
-
-# Modify bash profile to start terminal as root automatically
+# Modify bash profile to start terminal as root automatically for rstudio user
 RUN echo "sudo su -" >> /home/rstudio/.bashrc && \
     echo "export HOME=/home/rstudio" >> /home/rstudio/.bashrc && \
     chown rstudio:rstudio /home/rstudio/.bashrc
