@@ -31,6 +31,10 @@ RUN echo "sudo su -" >> /home/rstudio/.bashrc && \
     echo "export HOME=/home/rstudio" >> /home/rstudio/.bashrc && \
     chown rstudio:rstudio /home/rstudio/.bashrc
 
+# Fix file permissions so rstudio can modify files
+RUN chmod -R 777 /home/rstudio && \
+    chown -R rstudio:rstudio /home/rstudio
+
 # Expose the necessary ports
 EXPOSE 8787
 
