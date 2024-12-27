@@ -1,9 +1,10 @@
 FROM ghcr.io/lescai-teaching/rstudio-docker-amd64:latest
 
 # Set environment variables
+ENV PASSWORD 'rstudio'
 ENV PATH ${PATH}:/opt/software/bin
 ENV PORT 8787
-ENV DISABLE_AUTH true
+ENV DISABLE_AUTH false
 
 # Set working directory
 WORKDIR /home/rstudio
@@ -22,10 +23,6 @@ RUN apt update -y && \
 # Add sudo privileges to the RStudio user
 RUN echo "rstudio ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
-# Set up automatic login
-RUN echo "auth-none=1" >> /etc/rstudio/rserver.conf && \
-    echo "server-user=rstudio" >> /etc/rstudio/rserver.conf
-
 # Fix file permissions so rstudio can modify files (also for root)
 RUN chmod -R 777 /home/rstudio && \
     chown -R rstudio:rstudio /home/rstudio
@@ -34,4 +31,4 @@ RUN chmod -R 777 /home/rstudio && \
 EXPOSE 8787
 
 # Set entrypoint or CMD as needed
-CMD ["/usr/lib/rstudio-server/bin/rserver", "--server-daemonize", "false"]
+CMD ["/usr/lib/rstudio-server/bin/rserver", "--server-daemonize", "false", "--www-port=$PORT"]
