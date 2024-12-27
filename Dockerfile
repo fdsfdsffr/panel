@@ -5,7 +5,9 @@ ENV PASSWORD 'rstudio'
 ENV PATH ${PATH}:/opt/software/bin
 ENV PORT 8787
 ENV DISABLE_AUTH true
-ENV DEBIAN_FRONTEND=noninteractive  # Prevents unnecessary prompts during apt installs
+
+# Prevents unnecessary prompts during apt installs
+ENV DEBIAN_FRONTEND=noninteractive
 
 # Set working directory
 WORKDIR /home/rstudio
