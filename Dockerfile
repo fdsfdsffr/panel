@@ -3,7 +3,6 @@ FROM ghcr.io/lescai-teaching/rstudio-docker-amd64:latest
 # Set environment variables
 ENV PASSWORD 'rstudio'
 ENV PATH ${PATH}:/opt/software/bin
-ENV PORT 8787
 ENV DISABLE_AUTH false
 
 # Set working directory
@@ -27,8 +26,8 @@ RUN echo "rstudio ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 RUN chmod -R 777 /home/rstudio && \
     chown -R rstudio:rstudio /home/rstudio
 
-# Expose the necessary ports
+# Expose port for RStudio Server
 EXPOSE 8787
 
-# Set entrypoint or CMD as needed
-CMD ["/usr/lib/rstudio-server/bin/rserver", "--server-daemonize", "false", "--www-port=$PORT"]
+# Use Railway-provided PORT variable
+CMD ["/usr/lib/rstudio-server/bin/rserver", "--server-daemonize", "false", "--www-address=0.0.0.0", "--www-port=$PORT"]
